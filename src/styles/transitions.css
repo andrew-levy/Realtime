@@ -1,0 +1,14 @@
+.welcome-transitions-enter {
+  transform: translateY(1000px);
+}
+.welcome-transitions-enter-active {
+  transform: translateY(0px);
+  transition: transform 1000ms;
+}
+/* .welcome-transitions-exit {
+  transform: translateY(0px);
+}
+.welcome-transitions-exit-active {
+  transform: translateY(0px);
+  transition: transform 2000ms;
+} */
