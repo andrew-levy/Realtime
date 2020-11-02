@@ -22,7 +22,9 @@ const ClientCard = ({ client, openEditModal, setEditingClient }) => {
   );
   const { onCopy } = useClipboard(value);
   const deleteClient = async (client) => {
-    await deleteClientByID(client.clientID).then(() => router.reload());
+    if (confirm('Are you sure you want to delete this client?')) {
+      await deleteClientByID(client.clientID).then(() => router.reload());
+    }
   };
 
   const handleEditClick = () => {
@@ -42,7 +44,7 @@ const ClientCard = ({ client, openEditModal, setEditingClient }) => {
       borderRadius='6px'
       key={client.clientID}
     >
-      <Flex alignItems='center'>
+      <Flex alignItems='flex-start'>
         <NextLink href='/status/[clientID]' as={`/status/${client.clientID}`}>
           <a>
             <Heading mb='.2em' fontSize='2xl'>

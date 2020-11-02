@@ -57,10 +57,12 @@ const Login = () => {
             setEmailError(
               "We weren't able to find an account with that email. Try again!"
             );
+            break;
           case 'auth/wrong-password':
             setPasswordError(
               'Looks like your password is incorrect. Try again!'
             );
+            break;
         }
       });
   };

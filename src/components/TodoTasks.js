@@ -18,10 +18,21 @@ import { useState, useEffect } from 'react';
 import { getAgentByID } from '../firebase/queries';
 
 const TodoTasks = ({ todos, client }) => {
-  const agentEmail = '';
   const toast = useToast();
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [notified, setNotified] = useState([]);
   const [agent, setAgent] = useState(null);
+
+  useEffect(() => {
+    let notifiedFromStorage;
+    if ((notifiedFromStorage = localStorage.getItem('notified'))) {
+      setNotified(JSON.parse(notifiedFromStorage));
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log('new', notified);
+    localStorage.setItem('notified', JSON.stringify(notified));
+  }, [notified]);
 
   useEffect(() => {
     if (client) {
@@ -30,29 +41,36 @@ const TodoTasks = ({ todos, client }) => {
         let agentData;
         if ((agentData = docSnap.data()) !== undefined) {
           setAgent(agentData);
-          console.log(agentData);
         }
       });
     }
   }, [client]);
 
-  // need agent email and name, client name, and task label
-  const emailHTML = `
-    <h1>Hello AGENT,</h1>
-    <p>Your client, CLIENT, has completed a task: TASK </p>
-  `;
+  const getEmailHTML = (taskCompleted) =>
+    agent &&
+    client &&
+    `<h1>Hello ${agent.fname},</h1>
+    <p>Your client, ${client.fname} ${client.lname}, has completed a task: <b>${taskCompleted}</b> </p>`;
 
-  const notifyAgentCompleted = () => {
-    sendEmail(agentEmail, ``).then(
-      toast({
-        title: 'Notified your agent!',
-        description: ``,
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
-        position: 'top',
-      })
-    );
+  const notifyAgentCompleted = (e) => {
+    console.log('button pushed', e.target.value);
+    setNotified(...notified, e.target.value);
+    if (agent) {
+      // sendEmail(
+      //   agent.email,
+      //   'Task Completed',
+      //   getEmailHTML(e.target.value)
+      // ).then(() => {
+      //   toast({
+      //     title: 'Notified your agent!',
+      //     description: ``,
+      //     status: 'success',
+      //     duration: 9000,
+      //     isClosable: true,
+      //     position: 'top',
+      //   });
+      // });
+    }
   };
 
   return (
@@ -96,12 +114,13 @@ const TodoTasks = ({ todos, client }) => {
                         fugiat nulla pariatur.
                       </Text>
                       <Button
+                        value={task.label}
                         onClick={notifyAgentCompleted}
                         color='white'
                         bg='coolBlue'
                         width='50%'
                         mt='1em'
-                        isDisabled={isDisabled}
+                        // isDisabled={notified.includes(task.label)}
                       >
                         Mark as Done
                       </Button>

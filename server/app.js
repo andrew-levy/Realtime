@@ -12,8 +12,9 @@ app.prepare().then(() => {
 
   server.get('/sendEmail', (req, res) => {
     const to = req.query.to;
+    const subject = req.query.subject;
     const html = req.query.html;
-    sendEmail(to, html);
+    sendEmail(to, subject, html);
     return res.send(`Email sent to ${to}`);
   });
 
@@ -27,6 +28,6 @@ app.prepare().then(() => {
 
   server.listen(port, (err) => {
     if (err) throw err;
-    console.log(`> Ready on http://localhost:${port}`);
+    console.log(`Ready on http://localhost:${port}`);
   });
 });

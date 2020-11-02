@@ -1,30 +1,22 @@
 const nodemailer = require('nodemailer');
 
-const sendEmail = async (to, html) => {
-  // Generate test SMTP service account from ethereal.email
-  // Only needed if you don't have a real mail account for testing
-  let testAccount = await nodemailer.createTestAccount();
-  console.log('testAccount', testAccount);
-
+const sendEmail = async (to, subject, html) => {
   let transporter = nodemailer.createTransport({
-    host: 'smtp.ethereal.email',
-    port: 587,
-    secure: false, // true for 465, false for other ports
+    service: 'hotmail',
     auth: {
-      user: testAccount.user,
-      pass: testAccount.pass,
+      user: process.env.EMAIL_ADDRESS,
+      pass: process.env.EMAIL_PASSWORD,
     },
   });
 
   let info = await transporter.sendMail({
-    from: 'TEST',
+    from: process.env.EMAIL_ADDRESS,
     to: to,
-    subject: 'Sign In Success',
+    subject: subject,
     html,
   });
 
   console.log('Message sent: %s', info.messageId);
-  console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
 };
 
 module.exports.sendEmail = sendEmail;

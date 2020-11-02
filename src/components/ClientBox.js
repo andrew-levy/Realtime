@@ -4,7 +4,6 @@ import {
   Text,
   Input,
   Button,
-  Link as ChakraLink,
   Icon,
   Flex,
   Tooltip,

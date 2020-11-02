@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { addClient } from '../firebase/queries';
 import { useRouter } from 'next/router';
 import ClientFormContent from './ClientFormContent';

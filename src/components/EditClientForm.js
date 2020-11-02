@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import ClientFormContent from './ClientFormContent';
 import useFormInputStates from '../utils/useFormInputStates';
